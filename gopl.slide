@@ -1,0 +1,142 @@
+Reasons to read The Go Programming Language, by Kernighan and Donovan
+
+* Learning Go from scratch
+
+Not the fastest or most convenient way.
+
+Go is simple enough that a big book might not be required.
+
+- A Tour of Go
+- How to Write Go Code
+- Effective Go
+- Go Language Blog
+
+: One of the Go's big advantages was how confident I was I could write idiomatic Go after so little reading.
+
+* from scratch, cont.
+
+Introductory Chapter:
+
+- Teaches enough yak shaving up front for the reader to get by.
+- More testing in introductory chapter would be better for beginners.
+
+Exercises:
+
+- Assumes programming experience. No compsci fundamentals.
+: Exercises are more about exploring Go and practical usage of it; no writing data structures or sorting algorithms.
+- Exercises can be deceptively difficult.
+: A lot of them are designed to make you think, whereas A Tour of Go is all about getting you experienced with a range of language and stdlib features quickly.
+
+Conclusion:
+
+- Comprehensive. All the details. So many examples.
+- Great supplement where depth is required.
+
+: So while I don't think it's the best for those picking up another language, I think it'd work. Great resource in addition to other learning materials.
+: The Little Go Book also looks good. I'm sure there's many other great resources.
+: As a first language, for someone wanting a more guided approach, I haven't seen anything compelling. Laszlo Csontos is working on Learn Go The Hard Way, but it seems less beginner-focused than the other Hard Way books. Nathan Youngman is working on Learn Go.
+
+* Continued Learning
+
+The book shines here.
+
+Deep coverage of slices, error handling, defer, method receiver types, testing, and reflection.
+
+- Error messages inspired by NASA post mortems:
+: Compare to using imperative mode for git commit summaries.
+    
+    genesis: crashed: no parachute: G-switch failed: bad relay orientation.
+- Conventional for all method receivers to be either pointer or non-pointer. If all methods have a non-pointer receiver type then it's safe to copy instances of that type.
+    
+
+* Continued Learning: Culture
+
+Avoid learning through failure. Unify the team.
+
+: The philosophy of Go is a big attraction for me, so I wanted to absorb it. If possible, I want to avoid learning through failure.
+- opinionated
+- error-handling and testing are just programming
+- avoid needless abstraction; libraries over frameworks; do more with less
+- interface segregation (Reader, Writer, Stringer)
+- effective communication doesn't require verbosity (short, evocative names over long, descriptive names)
+- simplicity as a feature
+- respectful, professional communication practices
+
+* Continued Learning: Exercises
+
+- Approach usefulness.
+- Explore the standard library.
+: Often you're eased into libraries with a nice progression.
+- Show off the language and make you think about its design.
+
+How should a variadic min function handle no arguments?
+
+- Return an error? But min is frequently used in expressions.
+- Return a hardcoded or given default min value?
+- Panic?
+- Have one required argument? Clear, but awkward when calling with a slice:
+    
+    min(a[0], a[1:]...)
+
+
+: eg, ex5.15 explores tradeoffs when writing a variadic min function, which helped me understand why the standard library doesn't have one. Return an error for a function often used in expressions? Have a required argument and call it like min(a[0], ...a[1:])? Return a default min value? Panic?
+
+* Reference
+
+- Decent reference in general, though the many examples be might distracting.
+- Effective Go or Language Specification are probably more convenient and are also easier to share.
+- Anyone using reflection would probably appreciate the chapter on it.
+
+Great chapter on testing:
+
+- whitebox/blackbox testing are complementary
+- table-driven tests
+
+* Fractals: mandelbrot
+
+.image mandelbrot.png 550 _
+
+* Fractals: newton
+
+.image z4.png 550 _
+
+* CSS-ish selectors for XML (ex7.17)
+
+    func TestXMLSelect(t *testing.T) {
+        tests := []struct {
+            selectors, xml, want string
+        }{
+            {`a[id="3"] [id="4"]`, `<a id="3"><p id="4">good</p></a>`, "good\n"},
+            {`a[id="3"] [id="4"]`, `<a><p id="4">bad</p></a>`, ""},
+            {`[id="3"] [id]`, `<a id="3"><p id="4">good</p></a><a><p id="4">bad</p></a>`, "good\n"},
+            {`[id="3"][class=big]`, `<a id="3" class="big">good</a><a id="3">bad</a>`, "good\n"},
+            {`p a`, `<p><a>1</a><p><a>2</a></p></p><a>bad</a><p><a>3</a></p>`, "1\n2\n3\n"},
+        }
+        for _, test := range tests {
+            sels, err := parseSelectors(test.selectors)
+            if err != nil {
+                t.Error(test, err)
+                continue
+            }
+            w := &bytes.Buffer{}
+            xmlselect(w, strings.NewReader(test.xml), sels)
+            if w.String() != test.want {
+                t.Errorf("%s: got %q, want %q", test, w.String(), test.want)
+            }
+        }
+    }
+
+
+
+* FTP server (ex8.2)
+Exercise 8.2: Implement a concurrent File Transfer Protocol (FTP) server. The server should interpret commands from each client such as cd to change directory, ls to list a directory, get to send the contents of a file, and close to close the connection. You can use the standard ftp command as the client, or write your own.
+
+- daunting at first, surprisingly straightforward in retrospect
+
+: daunting at first when I was having trouble understanding the RFC's terminology and description of active and passive modes, but almost trivial in retrospect. Just 400 lines of straightforward code. It's in the concurrency (goroutine and channel) chapter, but the exercise doesn't really show off either language feature. I didn't use channels at all, and I only used goroutines in the most straightforward way.
+
+* Thank you.
+
+* Thanks again.
+
+GOPL is available from informIT watermarked but DRM-free in EPUB, MOBI, and PDF formats.
