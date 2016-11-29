@@ -13,7 +13,7 @@ Go is simple enough that a big book might not be required.
 
 : One of the Go's big advantages was how confident I was I could write idiomatic Go after so little reading.
 
-* from scratch, cont.
+* Learning Go from scratch: more
 
 Introductory Chapter:
 
@@ -22,16 +22,17 @@ Introductory Chapter:
 
 Exercises:
 
-- Assumes programming experience. No compsci fundamentals.
+- Programming experience assumed.
+: No compsci fundamentals.
 : Exercises are more about exploring Go and practical usage of it; no writing data structures or sorting algorithms.
-- Exercises can be deceptively difficult.
+- Can be deceptively difficult.
 : A lot of them are designed to make you think, whereas A Tour of Go is all about getting you experienced with a range of language and stdlib features quickly.
 
 Conclusion:
 
-- Comprehensive. All the details. So many examples.
+- Comprehensive.
 - Great supplement where depth is required.
-
+: All the details. So many examples.
 : So while I don't think it's the best for those picking up another language, I think it'd work. Great resource in addition to other learning materials.
 : The Little Go Book also looks good. I'm sure there's many other great resources.
 : As a first language, for someone wanting a more guided approach, I haven't seen anything compelling. Laszlo Csontos is working on Learn Go The Hard Way, but it seems less beginner-focused than the other Hard Way books. Nathan Youngman is working on Learn Go.
@@ -46,7 +47,16 @@ Deep coverage of slices, error handling, defer, method receiver types, testing, 
 : Compare to using imperative mode for git commit summaries.
     
     genesis: crashed: no parachute: G-switch failed: bad relay orientation.
+
 - Conventional for all method receivers to be either pointer or non-pointer. If all methods have a non-pointer receiver type then it's safe to copy instances of that type.
+
+    // Safe to copy.
+    func (p Point) Distance(q Point) float64
+    func (p Point) ScaleBy(f float64) Point
+
+    // Not safe to copy.
+    func (p *Point3D) Distance(q Point3D) float64
+    func (p *Point3D) ScaleBy(f float64)
     
 
 * Continued Learning: Culture
@@ -56,9 +66,9 @@ Avoid learning through failure. Unify the team.
 : The philosophy of Go is a big attraction for me, so I wanted to absorb it. If possible, I want to avoid learning through failure.
 - opinionated
 - error-handling and testing are just programming
-- avoid needless abstraction; libraries over frameworks; do more with less
+- avoid needless abstraction; libraries over frameworks
 - interface segregation (Reader, Writer, Stringer)
-- effective communication doesn't require verbosity (short, evocative names over long, descriptive names)
+- short, evocative names over long, descriptive names
 - simplicity as a feature
 - respectful, professional communication practices
 
@@ -84,7 +94,7 @@ How should a variadic min function handle no arguments?
 * Reference
 
 - Decent reference in general, though the many examples be might distracting.
-- Effective Go or Language Specification are probably more convenient and are also easier to share.
+- Effective Go or the language specification are more convenient and easier to share.
 - Anyone using reflection would probably appreciate the chapter on it.
 
 Great chapter on testing:
@@ -100,7 +110,7 @@ Great chapter on testing:
 
 .image z4.png 550 _
 
-* CSS-ish selectors for XML (ex7.17)
+* CSS-ish selectors for XML (exercise 7.17)
 
     func TestXMLSelect(t *testing.T) {
         tests := []struct {
@@ -128,7 +138,8 @@ Great chapter on testing:
 
 
 
-* FTP server (ex8.2)
+* FTP server
+
 Exercise 8.2: Implement a concurrent File Transfer Protocol (FTP) server. The server should interpret commands from each client such as cd to change directory, ls to list a directory, get to send the contents of a file, and close to close the connection. You can use the standard ftp command as the client, or write your own.
 
 - daunting at first, surprisingly straightforward in retrospect
